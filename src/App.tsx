@@ -40,7 +40,7 @@ function App() {
   return (
     <div className="App">
       <LoginContainer>
-        <div>aksjelog</div>
+        <div style={{ height: "5rem" }}>aksjelog</div>
         {isLoading ? (
           <Box style={{ width: "50%" }}>
             <LinearProgress color="secondary" />
