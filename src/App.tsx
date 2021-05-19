@@ -42,7 +42,7 @@ function App() {
       <div>SMILE :)</div>
       <div></div>
       <div>
-        <span>Project: </span>my-react-app-sample-google-login
+        <span>Project: </span>akjselog
       </div>
 
       <LoginContainer>
