@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Button from "@material-ui/core/Button/Button";
 import { FaGoogle } from "react-icons/fa";
 import firebase from "firebase/app";
-import { log } from "../../consoleHelper";
-import { auth } from "../../firebase";
-import { useAuthUser } from "../../hooks/useAuthUser";
+import { auth } from "../firebase";
+import { useAuthUser } from "../hooks/useAuthUser";
+import { Flex } from "../Components/UI/shared";
 
 export const GoogleLoginButton = () => {
   const { setAuthUser } = useAuthUser();
@@ -46,19 +46,12 @@ export const GoogleLoginButton = () => {
           handleLogIn();
         }}
       >
-        <div style={{ display: "flex" }}>
-          <div
-            style={{
-              width: "2rem",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+        <Flex>
+          <Flex width="2rem" justifyContent="center">
             <FaGoogle />
-          </div>
-          <div style={{ background: "none" }}>Sign in with Google</div>
-        </div>
+          </Flex>
+          <div style={{ background: "clear" }}>Sign in with Google</div>
+        </Flex>
       </Button>
     </>
   );
