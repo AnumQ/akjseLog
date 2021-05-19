@@ -11,10 +11,15 @@ export class UserService {
     FirebaseRepo.createItem(collection, { email: email, admin: false }, uid);
   };
 
-  static updateUser = (uid: string, fields: any) => {
-    FirebaseRepo.updateItem(collection, uid, {
-      ...fields,
-    });
+  static updateUser = (uid: string, fields: any, onCompletion?: () => void) => {
+    FirebaseRepo.updateItem(
+      collection,
+      uid,
+      {
+        ...fields,
+      },
+      onCompletion
+    );
   };
 
   static getUser = async (uid: string) => {
@@ -22,12 +27,12 @@ export class UserService {
     return user;
   };
 
-  static getEntries = async (uid: string) => {
+  static geSecurities = async (uid: string) => {
     try {
       const user = await FirebaseRepo.getItem(collection, uid);
       log("getEntries");
       log(user);
-      return user ? user.entries : undefined;
+      return user ? user.securities : undefined;
     } catch (err) {
       console.error(err);
     }

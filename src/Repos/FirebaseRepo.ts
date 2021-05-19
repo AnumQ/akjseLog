@@ -14,12 +14,22 @@ export class FirebaseRepo {
         // LoggerRepo.error("Error creating user to firestorme " + err.message);
       });
   };
-  static updateItem = (collection: string, docId: string, data: any) => {
+  static updateItem = (
+    collection: string,
+    docId: string,
+    data: any,
+    onCompletion?: () => void
+  ) => {
     db.collection(collection)
       .doc(docId)
       .set(data, { merge: true })
       .then(() => {
         log(`Updated item in ${collection} collection in firestore`);
+
+        //TODO: fetch user again
+        if (onCompletion) {
+          onCompletion();
+        }
       })
       .catch((err) => {
         console.error(err);

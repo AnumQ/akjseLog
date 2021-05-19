@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LogoutButton } from "../Login/LogoutButton";
 import { Menu } from "../Components/UI/shared";
 import { PROJECT_TITLE } from "../Constants";
@@ -6,25 +6,14 @@ import { auth } from "../firebase";
 import { log } from "../consoleHelper";
 import { UserService } from "../Services/UserService";
 import { useAuthUser } from "../hooks/useAuthUser";
-import firebase from "firebase/app";
+
 import { Container, IconButton } from "@material-ui/core";
 import { AddCircleRounded } from "@material-ui/icons";
+import { AddLogView } from "../AddLogView";
 
 export const Main = () => {
-  const { authUser } = useAuthUser();
+  const [isShowing, setShow] = useState(true);
 
-  async function getEntries(authUser: firebase.User) {
-    log("getEntries");
-    const entries = await UserService.getEntries(authUser.uid);
-    log("entries: ");
-    log(entries);
-  }
-
-  useEffect(() => {
-    if (authUser) {
-      getEntries(authUser);
-    }
-  }, [authUser]);
   return (
     <Container>
       <Menu>
@@ -35,9 +24,22 @@ export const Main = () => {
           }}
         />
       </Menu>
-      <IconButton aria-label="add">
-        <AddCircleRounded fontSize="large" color="primary" />
-      </IconButton>
+      {isShowing ? (
+        <AddLogView
+          handleClose={() => {
+            setShow(false);
+          }}
+        />
+      ) : (
+        <IconButton
+          aria-label="add"
+          onClick={() => {
+            setShow(true);
+          }}
+        >
+          <AddCircleRounded fontSize="large" color="primary" />
+        </IconButton>
+      )}
     </Container>
   );
 };
