@@ -29,7 +29,7 @@ export const AddLogView = ({ handleClose }: { handleClose: any }) => {
     if (authUser) {
       const fetchedUser = await getUser(authUser.uid);
       if (fetchedUser) {
-        //   log(fetchedUser as User);
+        log(fetchedUser as User);
         setUser(fetchedUser as User);
         setSecurities(fetchedUser.securities);
       }
@@ -44,6 +44,7 @@ export const AddLogView = ({ handleClose }: { handleClose: any }) => {
   }, [authUser]);
 
   const updateSecurities = (data: any) => {
+    log("updateSecurities...");
     if (authUser) {
       UserService.updateUser(
         authUser.uid,
@@ -51,14 +52,16 @@ export const AddLogView = ({ handleClose }: { handleClose: any }) => {
           securities: data,
         },
         () => {
-          log("update complete fetch user again");
+          log("Updated");
           getUserData();
+          alert("Opprettet");
         }
       );
     }
   };
 
   const AddSecurityButton = () => {
+    log(security);
     return (
       <>
         {security.length > 0 ? (
@@ -100,8 +103,12 @@ export const AddLogView = ({ handleClose }: { handleClose: any }) => {
               options={securities}
               getOptionLabel={(option) => option}
               style={{ width: fieldWidth }}
+              onInputChange={(e, value) => {
+                if (value === "") {
+                  //setSecurity(value);
+                }
+              }}
               renderInput={(params) => {
-                log(params);
                 return (
                   <TextField
                     {...params}
