@@ -39,13 +39,8 @@ function App() {
   };
   return (
     <div className="App">
-      <div>SMILE :)</div>
-      <div></div>
-      <div>
-        <span>Project: </span>akjselog
-      </div>
-
       <LoginContainer>
+        <div>aksjelog</div>
         {isLoading ? (
           <Box style={{ width: "50%" }}>
             <LinearProgress color="secondary" />
