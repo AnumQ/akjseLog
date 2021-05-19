@@ -12,11 +12,13 @@ export const useAuthUser = () => {
   const { isLoading, setIsLoading } = useLoading();
 
   useEffect(() => {
-    auth.onAuthStateChanged((authUser) => {
-      // log("useAuthUser: " + authUser);
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
       setAuthUser(authUser);
       setIsLoading(false);
     });
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return { authUser, setAuthUser, isLoading };

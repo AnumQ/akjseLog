@@ -48,7 +48,7 @@ export const Menu = styled.div`
 export const Container = styled.div`
   background-color: clear;
   height: 100vh;
-  width: 100%;
+  width: 90%;
   max-width: 80rem;
   margin: 0 auto;
   padding-top: 1rem;
