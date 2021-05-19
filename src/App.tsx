@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { GoogleLoginButton } from "./GoogleLoginButton";
-import styled from "styled-components";
+import { GoogleLoginButton } from "./Components/UI/GoogleLoginButton";
 import { auth } from "./firebase";
 import Box from "@material-ui/core/Box";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { useAuthUser } from "./hooks/useAuthUser";
-import {
-  FlexRow,
-  Flex,
-  Container,
-  CenterContainer,
-  Menu,
-} from "./Components/UI/shared";
+import { Flex, Container, CenterContainer, Menu } from "./Components/UI/shared";
 import { LogoutButton } from "./Components/UI/LogoutButton";
 
 function App() {
@@ -22,16 +15,25 @@ function App() {
   return (
     <Container>
       {isLoading ? (
-        <Flex style={{ height: "100vh" }}>
+        <Flex fullHeight>
           <Box style={{ width: "100%" }}>
             <LinearProgress color="secondary" />
           </Box>
         </Flex>
       ) : !authUser ? (
-        <CenterContainer>
-          <div style={{ height: "5rem" }}>{projectTitle}</div>
-          <GoogleLoginButton />
-        </CenterContainer>
+        <Flex fullHeight>
+          <CenterContainer>
+            <div
+              style={{
+                height: "5rem",
+                textAlign: "center",
+              }}
+            >
+              {projectTitle}
+            </div>
+            <GoogleLoginButton />
+          </CenterContainer>
+        </Flex>
       ) : (
         <Menu>
           <div>{projectTitle}</div>
