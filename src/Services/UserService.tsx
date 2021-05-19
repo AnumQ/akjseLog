@@ -22,6 +22,17 @@ export class UserService {
     return user;
   };
 
+  static getEntries = async (uid: string) => {
+    try {
+      const user = await FirebaseRepo.getItem(collection, uid);
+      log("getEntries");
+      log(user);
+      return user ? user.entries : undefined;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   static createUserIfDoesntExist = async (authUser: firebase.User) => {
     const user = await UserService.getUser(authUser.uid);
     if (!user) {

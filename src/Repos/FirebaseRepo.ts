@@ -1,7 +1,6 @@
 import React from "react";
 import { log } from "../consoleHelper";
 import { db } from "../firebase";
-
 export class FirebaseRepo {
   static createItem = (collection: string, data: any, docId?: string) => {
     db.collection(collection)
@@ -32,6 +31,15 @@ export class FirebaseRepo {
     try {
       const doc = await db.collection(collection).doc(docId).get();
       return doc.exists ? doc.data() : undefined;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  static getItems = async (collection: string) => {
+    try {
+      const docs = await db.collection(collection).get();
+      return docs;
     } catch (err) {
       console.error(err);
     }
