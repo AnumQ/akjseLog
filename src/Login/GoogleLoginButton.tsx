@@ -5,6 +5,7 @@ import firebase from "firebase/app";
 import { auth } from "../firebase";
 import { useAuthUser } from "../hooks/useAuthUser";
 import { Flex } from "../Components/UI/shared";
+import { UserService } from "../Services/UserService";
 
 export const GoogleLoginButton = () => {
   const { setAuthUser } = useAuthUser();
@@ -26,6 +27,7 @@ export const GoogleLoginButton = () => {
 
         if (user) {
           setAuthUser(user);
+          UserService.createUserIfDoesntExist(user);
         }
 
         // Don't rely on this UI optimization to control

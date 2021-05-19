@@ -3,6 +3,7 @@ import firebase from "firebase/app";
 import { log } from "../consoleHelper";
 import { auth } from "../firebase";
 import { useLoading } from "./useLoading";
+import { UserService } from "../Services/UserService";
 
 export const useAuthUser = () => {
   const [authUser, setAuthUser] = useState<firebase.User | null | undefined>(

@@ -2,7 +2,7 @@ import React from "react";
 import { log } from "../consoleHelper";
 import { db } from "../firebase";
 
-export class ItemRepo {
+export class FirebaseRepo {
   static createItem = (collection: string, data: any, docId?: string) => {
     db.collection(collection)
       .doc(docId)
@@ -15,7 +15,7 @@ export class ItemRepo {
         // LoggerRepo.error("Error creating user to firestorme " + err.message);
       });
   };
-  static updateItem = (collection: string, data: any, docId?: string) => {
+  static updateItem = (collection: string, docId: string, data: any) => {
     db.collection(collection)
       .doc(docId)
       .set(data, { merge: true })
@@ -28,27 +28,12 @@ export class ItemRepo {
       });
   };
 
-  static getItem = (collection: string, docId: string) =>
-    db
-      .collection(collection)
-      .doc(docId)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          const data = doc.data();
-          if (data !== undefined) {
-            log("date is not undefined");
-            log(data);
-          } else {
-            //logErrorAndRejectPromise(errorMessage, reject);
-          }
-        } else {
-          log("doc does not exists");
-          log(doc);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        // logErrorAndRejectPromise(JSON.stringify(error), reject);
-      });
+  static getItem = async (collection: string, docId: string) => {
+    try {
+      const doc = await db.collection(collection).doc(docId).get();
+      return doc.exists ? doc.data() : undefined;
+    } catch (err) {
+      console.error(err);
+    }
+  };
 }
