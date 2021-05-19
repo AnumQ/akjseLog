@@ -10,6 +10,7 @@ import Box from "@material-ui/core/Box";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { useAuthUser } from "./hooks/useAuthUser";
 import { FlexRow, Flex } from "./Components/UI/shared";
+import { LogoutButton } from "./Components/UI/LogoutButton";
 
 const LoginContainer = styled.div`
   background-color: "#ffffff";
@@ -35,19 +36,6 @@ function App() {
   const { authUser, isLoading } = useAuthUser();
 
   const projectTitle = "aksjelog";
-  const LogOutButton = () => {
-    return (
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => {
-          auth.signOut();
-        }}
-      >
-        Log Out
-      </Button>
-    );
-  };
   return (
     <Container>
       {isLoading ? (
@@ -64,7 +52,11 @@ function App() {
       ) : (
         <FlexRow justifyContent="space-between" alignItems="center">
           <div>{projectTitle}</div>
-          <LogOutButton />
+          <LogoutButton
+            handleLogout={() => {
+              auth.signOut();
+            }}
+          />
         </FlexRow>
       )}
     </Container>
