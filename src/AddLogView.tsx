@@ -10,15 +10,22 @@ import { useAuthUser } from "./hooks/useAuthUser";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import firebase from "firebase/app";
 
+interface Entry {
+  security: string;
+  price: string;
+  note: string;
+}
 interface User {
   email: string;
   securities: string[];
+  entries: Entry[];
 }
 export const AddLogView = ({ handleClose }: { handleClose: any }) => {
   const { authUser } = useAuthUser();
   const [user, setUser] = useState<User | undefined>(undefined);
 
   const [security, setSecurity] = useState("");
+  const [newSecurity, setNewSecurity] = useState("");
 
   const [price, setPrice] = useState("");
   const [note, setNote] = useState("");
@@ -43,7 +50,7 @@ export const AddLogView = ({ handleClose }: { handleClose: any }) => {
     getUserData();
   }, [authUser]);
 
-  const updateSecurities = (data: any) => {
+  const updateUser = (data: any) => {
     log("updateSecurities...");
     if (authUser) {
       UserService.updateUser(
@@ -54,36 +61,35 @@ export const AddLogView = ({ handleClose }: { handleClose: any }) => {
         () => {
           log("Updated");
           getUserData();
-          alert("Opprettet");
         }
       );
     }
   };
 
-  const AddSecurityButton = () => {
-    log(security);
-    return (
-      <>
-        {security.length > 0 ? (
-          <IconButton
-            aria-label="add"
-            onClick={() => {
-              if (security.length > 0) {
-                const itemsInList = securities.filter((s) => s === security);
-                if (itemsInList.length === 0) {
-                  const newSecurities = [...securities, security];
-                  updateSecurities(newSecurities);
-                }
-              }
-            }}
-            disabled={security.length < 1}
-          >
-            <AddCircleRounded color="primary" />
-          </IconButton>
-        ) : null}
-      </>
-    );
-  };
+  const addEntry = () => {
+
+    const userEntries = user?.entries;
+    log("userEntries")
+    log(userEntries);
+
+    const newEntry = { security: security, price: price, note: note };
+    let newEntries;
+    if (!userEntries) {
+      newEntries = [newEntry];
+    } else {
+      newEntries = [...userEntries, newEntry]
+    }
+
+    log("newEntries");
+    log(newEntries);
+    updateUser({entries : newEntries});
+  }
+
+  const isItemInList = (value: string) => {
+    const foundInList = securities.filter((s) => (s as string).toLowerCase() === value.toLowerCase()).length === 1;
+
+    return foundInList;
+  }
 
   return (
     <Card
@@ -100,14 +106,11 @@ export const AddLogView = ({ handleClose }: { handleClose: any }) => {
           <FlexRow>
             <Autocomplete
               id="combo-box-demo"
-              options={securities}
+              autoSelect
+              options={[...securities, security]}
               getOptionLabel={(option) => option}
               style={{ width: fieldWidth }}
-              onInputChange={(e, value) => {
-                if (value === "") {
-                  //setSecurity(value);
-                }
-              }}
+             
               renderInput={(params) => {
                 return (
                   <TextField
@@ -145,8 +148,13 @@ export const AddLogView = ({ handleClose }: { handleClose: any }) => {
             variant="contained"
             color="primary"
             style={{ width: fieldWidth }}
+            disabled={security.length === 0}
             onClick={() => {
               log("save asset");
+              if (security.length > 0) {
+                addEntry();
+              } 
+             
             }}
           >
             Save
